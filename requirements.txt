@@ -1,0 +1,16 @@
+pandas
+pytest
+elasticsearch
+pydantic
+tenacity
+zmq
+pyzmq
+kafka-python
+cachetools
+numpy
+nltk
+sqlalchemy
+setuptools
+ujson
+onnxruntime==1.10.0
+config

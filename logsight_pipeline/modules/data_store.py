@@ -4,7 +4,7 @@ from typing import Union
 from logsight.analytics_core.logs import LogBatch
 from logsight.common.helpers import to_flat_dict
 from logsight.connectors import ConnectableConnector, Sink, Source
-from logsight_pipeline.config.properties import LogsightPipelineConfigProperties
+from logsight_pipeline.configs.properties import LogsightPipelineConfigProperties
 from logsight_pipeline.modules.core.module import ConnectableModule
 
 # A class that is defined in the `logsight_pipeline_config.py` file.

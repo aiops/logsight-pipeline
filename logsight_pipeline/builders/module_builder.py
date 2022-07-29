@@ -1,6 +1,6 @@
 from dacite import from_dict
 
-from ..config.properties import ModuleConfigProperties
+from logsight_pipeline.configs.properties import ModuleConfigProperties
 from logsight.connectors.builders.properties import ConnectorConfigProperties
 
 from logsight.common.patterns.builder import Builder

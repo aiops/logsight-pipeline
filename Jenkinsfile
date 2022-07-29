@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER = credentials('dockerhub')
-        DOCKER_REPO = "logsight/logsight"
+        DOCKER_REPO = "logsight/logsight-pipeline"
     }
 
     stages {
@@ -19,6 +19,8 @@ pipeline {
                     env.RETRY_TIMEOUT = 1
                 }
                 sh 'pip install -r requirements.txt'
+                sh 'pip install "git+ssh://git@github.com/aiops/logsight.git@$BRANCH_NAME"'
+
                 sh 'PYTHONPATH=$PWD/logsight py.test --junitxml test-report.xml --cov-report xml:coverage-report.xml --cov=logsight tests/'
                 stash name: 'test-reports', includes: '*.xml' 
             }
@@ -89,6 +91,7 @@ pipeline {
                 sh "docker buildx rm"
                 sh "docker buildx create --driver docker-container --name multiarch --use --bootstrap"
                 sh "echo $DOCKER_PSW | docker login -u $DOCKER_USR --password-stdin"
+
                 sh "docker buildx build --push --platform linux/amd64,linux/arm64/v8 -t $DOCKER_REPO:$BRANCH_NAME -t $DOCKER_REPO:latest ."
                 sh "docker buildx rm"
             }

@@ -1,6 +1,6 @@
 from typing import Dict, Optional, Tuple
 
-from logsight_pipeline.config.properties import ModuleConfigProperties, PipelineProperties, PipelineConnectorsProperties
+from logsight_pipeline.configs.properties import ModuleConfigProperties, PipelineProperties, PipelineConnectorsProperties
 from logsight.common.patterns.builder import Builder, BuilderException
 from .adapter_builder import PipelineAdapterBuilder
 from .module_builder import ModuleBuilder
