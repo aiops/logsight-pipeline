@@ -21,7 +21,7 @@ pipeline {
                 sh 'pip install -r requirements.txt'
                 sh 'pip install "git+ssh://git@github.com/aiops/logsight.git@$BRANCH_NAME"'
 
-                sh 'PYTHONPATH=$PWD/logsight py.test --junitxml test-report.xml --cov-report xml:coverage-report.xml --cov=logsight tests/'
+                sh 'PYTHONPATH=$PWD/logsight_pipeline py.test --junitxml test-report.xml --cov-report xml:coverage-report.xml --cov=logsight_pipeline tests/'
                 stash name: 'test-reports', includes: '*.xml' 
             }
             post {
