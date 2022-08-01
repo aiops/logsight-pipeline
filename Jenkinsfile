@@ -3,8 +3,9 @@ pipeline {
 
     environment {
         DOCKER = credentials('dockerhub')
+        GITHUB_TOKEN = credentials('github-pat-jenkins')
         DOCKER_REPO = "logsight/logsight-pipeline"
-        VERSION = "lib"
+        LOGSIGHT_LIB_VERSION = "lib"
     }
 
     stages {
@@ -21,8 +22,7 @@ pipeline {
                 }
                 sh 'pip install -r requirements.txt'
                 sh 'git clone -b $VERSION https://github.com/aiops/logsight.git /tmp/logsight'
-                sh 'pip install git+file:///tmp/logsight'
-                //sh 'pip install "git+ssh://git@github.com/aiops/logsight.git@$BRANCH_NAME"'
+                sh 'pip install "git+https://$GITHUB_TOKEN@github.com/aiops/logsight.git@$LOGSIGHT_LIB_VERSION"'
                 sh 'PYTHONPATH=$PWD/logsight_pipeline py.test --junitxml test-report.xml --cov-report xml:coverage-report.xml --cov=logsight_pipeline tests/'
                 stash name: 'test-reports', includes: '*.xml' 
             }
