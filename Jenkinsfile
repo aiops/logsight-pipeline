@@ -21,7 +21,7 @@ pipeline {
                     env.RETRY_TIMEOUT = 1
                 }
                 sh 'pip install -r requirements.txt'
-                sh 'apt-get update && apt-get install git-lfs'
+                sh 'apt-get update && apt-get install -y git-lfs'
                 sh 'pip install "git+https://$GITHUB_TOKEN@github.com/aiops/logsight.git@$LOGSIGHT_LIB_VERSION"'
                 sh 'PYTHONPATH=$PWD/logsight_pipeline py.test --junitxml test-report.xml --cov-report xml:coverage-report.xml --cov=logsight_pipeline tests/'
                 stash name: 'test-reports', includes: '*.xml' 
