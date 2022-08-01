@@ -20,7 +20,7 @@ pipeline {
                     env.RETRY_TIMEOUT = 1
                 }
                 sh 'pip install -r requirements.txt'
-                sh 'git clone github.com/aiops/logsight.git -C /tmp/logsight'
+                sh 'git clone -b $VERSION https://github.com/aiops/logsight.git /tmp/logsight'
                 sh 'pip install git+file:///tmp/logsight'
                 //sh 'pip install "git+ssh://git@github.com/aiops/logsight.git@$BRANCH_NAME"'
                 sh 'PYTHONPATH=$PWD/logsight_pipeline py.test --junitxml test-report.xml --cov-report xml:coverage-report.xml --cov=logsight_pipeline tests/'
