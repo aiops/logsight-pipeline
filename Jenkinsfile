@@ -21,7 +21,6 @@ pipeline {
                     env.RETRY_TIMEOUT = 1
                 }
                 sh 'pip install -r requirements.txt'
-                sh 'git clone -b $VERSION https://github.com/aiops/logsight.git /tmp/logsight'
                 sh 'pip install "git+https://$GITHUB_TOKEN@github.com/aiops/logsight.git@$LOGSIGHT_LIB_VERSION"'
                 sh 'PYTHONPATH=$PWD/logsight_pipeline py.test --junitxml test-report.xml --cov-report xml:coverage-report.xml --cov=logsight_pipeline tests/'
                 stash name: 'test-reports', includes: '*.xml' 
@@ -79,7 +78,7 @@ pipeline {
         }
         stage ("Build and test Docker Image") {
             steps {
-                sh "docker build . -t $DOCKER_REPO:${GIT_COMMIT[0..7]}"
+                sh "docker build --build-arg GITHUB_TOKEN=$GITHUB_TOKEN --build-arg LOGSIGHT_LIB_VERSION=$LOGSIGHT_LIB_VERSION . -t $DOCKER_REPO:${GIT_COMMIT[0..7]}"
                 // Add step/script to test (amd64) docker image
             }
         }
