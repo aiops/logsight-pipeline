@@ -2,7 +2,7 @@ import pytest
 
 from logsight.connectors import ConnectableConnector
 from logsight_pipeline.builders.module_builder import ModuleBuilder
-from logsight_pipeline.config.properties import ModuleConfigProperties
+from logsight_pipeline.configs.properties import ModuleConfigProperties
 from logsight_pipeline.modules.core import ConnectableModule
 
 

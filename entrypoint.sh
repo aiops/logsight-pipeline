@@ -15,4 +15,4 @@ check_license() {
 }
 
 check_license
-python3 -u "${LOGSIGHT_HOME}/run.py"
+cd $LOGSIGHT_HOME && python3 -u run.py

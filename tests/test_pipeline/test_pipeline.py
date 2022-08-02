@@ -5,8 +5,10 @@ import pytest
 
 from logsight.connectors.builders.properties import AdapterConfigProperties, ConnectorConfigProperties
 from logsight.connectors.connectors.elasticsearch import ElasticsearchConfigProperties
+from logsight.analytics_core.logs import LogBatch, LogsightLog
+from dacite import from_dict
 from logsight_pipeline.builders.pipeline_builder import PipelineBuilder
-from logsight_pipeline.config.configuration import PipelineConfig
+from logsight_pipeline.configs.configuration import PipelineConfig
 from logsight_pipeline.modules.core import ConnectableModule
 from elasticsearch import helpers
 
@@ -26,7 +28,7 @@ def pipeline():
 def pipeline_with_control():
     pipeline_cfg = PipelineConfig().pipeline_config
     pipeline_cfg.connectors.control_source = AdapterConfigProperties(
-        connector=ConnectorConfigProperties("source", "stdin"))
+        connector=ConnectorConfigProperties("source", "file"))
     # Add control source
 
     builder = PipelineBuilder()
@@ -35,12 +37,12 @@ def pipeline_with_control():
 
 
 # noinspection PyUnresolvedReferences
-@mock.patch("threading.Thread")
 def test_run(pipeline):
     pipeline.control_source = MagicMock()
-    pipeline.data_source._receive_message = MagicMock(
-        return_value="""{"logs": [{"timestamp": "2020-01-01", "message": "Hello World", "level": "INFO"}],
-                      "index": "test_index"}""".encode('utf-8')
+    pipeline.data_source.receive = MagicMock(
+        return_value=LogBatch(logs=[
+            LogsightLog(**{"timestamp": "2020-01-01", "message": "Hello World", "level": "INFO"})],
+            index="test_index")
     )
     pipeline.data_source.has_next = MagicMock(side_effect=[True, False])
     if 'log_ad' in pipeline.modules:
@@ -61,7 +63,8 @@ def test_run(pipeline):
     pipeline.data_source.connect = MagicMock()
     pipeline.storage = MagicMock()
 
-    pipeline.run()
+    with mock.patch("threading.Thread"):
+        pipeline.run()
 
 
 def test_start_control_listener(pipeline):

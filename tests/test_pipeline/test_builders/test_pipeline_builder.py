@@ -4,7 +4,8 @@ from logsight.common.patterns.builder import BuilderException
 from logsight.connectors.builders.properties import AdapterConfigProperties, ConnectorConfigProperties
 from logsight.connectors.sources import StdinSource
 from logsight_pipeline.builders.pipeline_builder import PipelineBuilder
-from logsight_pipeline.config.properties import ModuleConfigProperties, PipelineConnectorsProperties, PipelineProperties
+from logsight_pipeline.configs.properties import ModuleConfigProperties, PipelineConnectorsProperties, \
+    PipelineProperties
 from logsight_pipeline.modules import AnomalyDetectionModule, LogStoreModule, LogParserModule
 
 

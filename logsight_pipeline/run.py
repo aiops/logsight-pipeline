@@ -1,12 +1,14 @@
 import logging.config
+import os
 import platform
+import sys
 from multiprocessing import set_start_method
 
 # hello world
-from logsight_pipeline.config.globals import path
-from logsight_pipeline.config.configuration import PipelineConfig
+from logsight_pipeline.configs.globals import path
+from logsight_pipeline.configs.configuration import PipelineConfig
 from logsight.logger.configuration import LogConfig
-from logsight_pipeline.builders.pipeline_builder import PipelineBuilder
+from builders.pipeline_builder import PipelineBuilder
 from logsight.services.service_provider import ServiceProvider
 
 logging.config.dictConfig(LogConfig().config)

@@ -6,7 +6,7 @@ from logsight.connectors.builders.config_provider import ConnectorConfigProvider
 from logsight.connectors.builders.properties import AdapterConfigProperties
 from logsight.connectors.serializers import LogBatchSerializer
 from logsight.connectors import serializers
-from ..ports.pipeline_adapters import PipelineSourceAdapter
+from logsight_pipeline.ports.pipeline_adapters import PipelineSourceAdapter
 
 
 class PipelineAdapterBuilder(Builder):

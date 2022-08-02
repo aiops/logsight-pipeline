@@ -8,7 +8,7 @@ from logsight_pipeline.ports.pipeline_adapters import PipelineSourceAdapter
 
 @pytest.fixture
 def valid_source():
-    yield ConnectorConfigProperties(connector_type="source", connection="stdin")
+    yield ConnectorConfigProperties(connector_type="source", connection="file")
 
 
 def test_build_pipeline_source(valid_source):
