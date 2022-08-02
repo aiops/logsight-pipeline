@@ -83,7 +83,7 @@ pipeline {
                     docker build \
                         --build-arg GITHUB_TOKEN=$GITHUB_TOKEN \
                         --build-arg LOGSIGHT_LIB_VERSION=$LOGSIGHT_LIB_VERSION \
-                        -t $DOCKER_REPO:${GIT_COMMIT[0..7]} ."
+                        -t $DOCKER_REPO:${GIT_COMMIT[0..7]} .
                 '''
                 // Add step/script to test (amd64) docker image
             }
