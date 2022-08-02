@@ -1,6 +1,6 @@
 
 # set base image (host OS)
-FROM python:3.8
+FROM python:3.9
 ARG GITHUB_TOKEN
 ARG LOGSIGHT_LIB_VERSION
 
