@@ -35,8 +35,8 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           projectBaseDir: app/src
-          projectKey: aiops_logsight-pipeline
           args: >
+            -Dsonar.projectKey=aiops_logsight-pipeline
             -Dsonar.python.version=3
             -Dsonar.organization=logsight
             -Dsonar.sources=logsight_pipeline -Dsonar.tests=tests/.
