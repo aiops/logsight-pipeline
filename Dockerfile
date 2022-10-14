@@ -21,6 +21,7 @@ RUN pip install "git+https://$GITHUB_TOKEN@github.com/aiops/logsight.git@$LOGSIG
 COPY ./logsight_pipeline logsight_pipeline
 # copy entrypoint.sh
 COPY entrypoint.sh .
+RUN chmod +x ./entrypoint.sh
 
 # Set logsight home dir
 ENV LOGSIGHT_HOME="/code/logsight_pipeline"
