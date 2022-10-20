@@ -24,7 +24,7 @@ pipeline {
                 sh 'apt-get update && apt-get install -y git-lfs'
                 sh 'pip install "git+https://$GITHUB_TOKEN@github.com/aiops/logsight.git@$LOGSIGHT_LIB_VERSION"'
                 sh 'py.test --junitxml test-report.xml --cov-report xml:coverage-report.xml --cov=logsight_pipeline tests/'
-                stash name: 'test-reports', includes: '*.xml' 
+                stash name: 'test-reports', includes: '*.xml'
             }
             post {
                 always {
