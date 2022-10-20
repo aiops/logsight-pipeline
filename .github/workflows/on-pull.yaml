@@ -1,11 +1,20 @@
-name: Build Pipeline
+name: Build, Test, Code Coverage
 
-on: [push]
+on:
+  pull_request:
+    types:
+      - opened
+    branches:
+      - 'v*.*.*'
+  push:
+    branches:
+      - 'v*.*.*'
 
 jobs:
   test:
     runs-on: ubuntu-latest
     env:
+      DOCKER_REPO: logsight/logsight-pipeline
       LOGSIGHT_LIB_VERSION: v1.3.0
     steps:
       - name: Check out the repo
@@ -42,4 +51,16 @@ jobs:
             -Dsonar.inclusions="**/*.py"
             -Dsonar.python.coverage.reportPaths=coverage-report.xml
             -Dsonar.test.reportPath=test-report.xml
-        
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          build-args: |
+            GITHUB_TOKEN=${{ secrets.MACHINE_ACCESS_TOKEN }}
+            LOGSIGHT_LIB_VERSION=${{ env.LOGSIGHT_LIB_VERSION }}
+          tags: ${{ env.DOCKER_REPO }}:${{ github.ref_name }}
