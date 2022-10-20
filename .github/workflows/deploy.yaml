@@ -1,0 +1,39 @@
+name: Publish Docker image on release
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    
+jobs:
+  deploy:
+    name: Push Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_REPO: logsight/logsight-pipeline
+      LOGSIGHT_LIB_VERSION: v1.3.0
+
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_ID }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          build-args: |
+            GITHUB_TOKEN=${{ secrets.MACHINE_ACCESS_TOKEN }}
+            LOGSIGHT_LIB_VERSION=${{ env.LOGSIGHT_LIB_VERSION }}
+          tags: ${{ env.DOCKER_REPO }}:${{ github.ref_name }}

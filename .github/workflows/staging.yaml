@@ -1,0 +1,68 @@
+name: Test in staging environment
+
+on:
+  pull_request:
+    types:
+      - opened
+    branches:
+      - 'main'
+  push:
+    branches:
+      - 'main'
+  workflow_dispatch:
+
+jobs:
+  test_staging:
+    runs-on: ubuntu-latest
+    name: Test Docker image on Staging
+    env:
+      DOCKER_REPO: logsight/logsight-pipeline
+      LOGSIGHT_LIB_VERSION: v1.3.0
+      DOCKER_IMAGE_TAG_LOGSIGHT_PIPELINE: ${{ github.head_ref }}
+      LOGSIGHT_TAG_REPOSITORY: logsight-pipeline
+      LOGSIGHT_TAG_VERSION: v1.3.0
+      LOGSIGHT_USER: ${{ secrets.LOGSIGHT_USER }}
+      LOGSIGHT_PASSWORD: ${{ secrets.LOGSIGHT_PASSWORD }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          repository: aiops/logsight-deployment
+          ref: v1.3.0
+          token: ${{ secrets.MACHINE_ACCESS_TOKEN }}
+          path: ./deploy
+          submodules: true
+      - name: Run deploy preprod
+        run: |
+          env | grep LOGSIGHT >> ./deploy/deploy/deployment/docker-compose/docker-compose/.env
+          cat ./deploy/deploy/deployment/docker-compose/docker-compose/.env
+          ./deploy/deploy/run-local.sh
+      - name: Check docker
+        run: |
+          docker ps
+      - name: Create user
+        run: |
+          sleep 90 && curl -X POST "http://localhost:8080/api/v1/users" -H "accept: */*" -H "Content-Type: application/json" -d "{ \"email\": \"email@email.com\", \"password\": \"password\"}"
+      - name: Checkout sdk
+        uses: actions/checkout@v3
+        with:
+          repository: aiops/logsight-sdk-py
+          ref: develop
+          token: ${{ secrets.MACHINE_ACCESS_TOKEN }}
+          path: ./sdk
+      - name: Install dependencies
+        run: python -m pip install -r ./sdk/requirements-dev.txt
+      - name: Run tox
+        run: |
+          cd sdk && python -m tox && sleep 15
+      - name: Verify
+        uses: aiops/logsight-verification-action@v1.2.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ secrets.LOGSIGHT_USER }}
+          password: ${{ secrets.LOGSIGHT_PASSWORD }}
+          repository: "logsight-pipeline"
+          baseline_tag: v1.3.0
+          candidate_tag: v1.3.0
+          risk_threshold: 25
