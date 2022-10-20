@@ -10,7 +10,6 @@ check_license() {
     echo "For example: docker run -e ACCEPT_LOGSIGHT_LICENSE=accept-license logsight/logsight-pipeline"
     echo ""
     # TODO: Add print with link to license text
-
     exit 1
   fi
 }
