@@ -52,6 +52,12 @@ jobs:
             -Dsonar.python.coverage.reportPaths=coverage-report.xml
             -Dsonar.test.reportPath=test-report.xml
 
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_ID }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       - name: Build and push
