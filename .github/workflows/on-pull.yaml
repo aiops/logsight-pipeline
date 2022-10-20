@@ -63,4 +63,4 @@ jobs:
           build-args: |
             GITHUB_TOKEN=${{ secrets.MACHINE_ACCESS_TOKEN }}
             LOGSIGHT_LIB_VERSION=${{ env.LOGSIGHT_LIB_VERSION }}
-          tags: ${{ env.DOCKER_REPO }}:${{ github.head_ref }}
+          tags: ${{ env.DOCKER_REPO }}:dev
