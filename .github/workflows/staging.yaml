@@ -1,11 +1,10 @@
 name: Test in staging environment
 
 on:
-  pull_request:
-    types:
-      - opened
+  pull_request_target:
+    types: [assigned, opened, synchronize, reopened]
     branches:
-      - 'main'
+      - 'v*.*.*'
   push:
     branches:
       - 'main'
@@ -18,7 +17,7 @@ jobs:
     env:
       DOCKER_REPO: logsight/logsight-pipeline
       LOGSIGHT_LIB_VERSION: v1.3.0
-      DOCKER_IMAGE_TAG_LOGSIGHT_PIPELINE: dev
+      DOCKER_IMAGE_TAG_LOGSIGHT_PIPELINE: ${{ github.head_ref }}-dev
       LOGSIGHT_TAG_REPOSITORY: logsight-pipeline
       LOGSIGHT_TAG_VERSION: v1.3.0
       LOGSIGHT_USER: ${{ secrets.LOGSIGHT_USER }}

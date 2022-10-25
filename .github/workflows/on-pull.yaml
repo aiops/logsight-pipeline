@@ -1,14 +1,11 @@
 name: Build, Test, Code Coverage
 
 on:
-  pull_request:
-    types:
-      - opened
+  pull_request_target:
+    types: [assigned, opened, synchronize, reopened]
     branches:
       - 'v*.*.*'
-  push:
-    branches:
-      - 'v*.*.*'
+
 
 jobs:
   test:
@@ -69,4 +66,4 @@ jobs:
           build-args: |
             GITHUB_TOKEN=${{ secrets.MACHINE_ACCESS_TOKEN }}
             LOGSIGHT_LIB_VERSION=${{ env.LOGSIGHT_LIB_VERSION }}
-          tags: ${{ env.DOCKER_REPO }}:dev
+          tags: ${{ env.DOCKER_REPO }}:${{ github.base_ref }}-dev
