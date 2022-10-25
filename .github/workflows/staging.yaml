@@ -61,4 +61,4 @@ jobs:
           repository: "logsight-pipeline"
           baseline_tag: v1.3.0
           candidate_tag: v1.3.0
-          risk_threshold: 25
+          risk_threshold: 60
