@@ -5,9 +5,7 @@ on:
     types: [assigned, opened, synchronize, reopened]
     branches:
       - 'v*.*.*'
-  push:
-    branches:
-      - 'v*.*.*'
+
 
 jobs:
   test:
