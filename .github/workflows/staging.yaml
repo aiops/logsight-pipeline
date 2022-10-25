@@ -4,9 +4,6 @@ on:
   pull_request_target:
     types: [assigned, opened, synchronize, reopened]
     branches:
-      - 'v*.*.*'
-  push:
-    branches:
       - 'main'
   workflow_dispatch:
 
