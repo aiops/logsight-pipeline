@@ -18,7 +18,6 @@ RUN pip install "git+https://$GITHUB_TOKEN@github.com/aiops/logsight.git@$LOGSIG
 RUN pip install "git+https://github.com/aiops/logsight-sdk-py.git@develop"
 
 
-
 # copy code
 COPY ./logsight_pipeline logsight_pipeline
 # copy entrypoint.sh
