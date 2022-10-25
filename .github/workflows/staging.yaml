@@ -1,11 +1,10 @@
 name: Test in staging environment
 
 on:
-  pull_request:
-    types:
-      - opened
+  pull_request_target:
+    types: [assigned, opened, synchronize, reopened]
     branches:
-      - 'main'
+      - 'v*.*.*'
   push:
     branches:
       - 'main'
